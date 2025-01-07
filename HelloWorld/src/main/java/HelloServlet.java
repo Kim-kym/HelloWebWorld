@@ -9,9 +9,16 @@ import java.util.logging.Logger;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+//	/hs URL에 연결 
+@WebServlet(name="<MyFirstServlet", urlPatterns="/hs",
+		initParams= {@WebInitParam(name="servletName", value="HelloServlet"),
+			        @WebInitParam(name="description", value="나의 첫 번째 서블릿입니다.")})
 
 //	/hs URL에 연결 
 public class HelloServlet extends HttpServlet {
@@ -62,8 +69,10 @@ public class HelloServlet extends HttpServlet {
 		//	name 파라미터를 받음
 		String name = req.getParameter("name");
 		
+		//	name 파라미터가 없으면 -> Error 
 		if (name == null) {
 			name = "Anonymous";
+			throw new ServletException("name 파라미터는 필수입니다.");
 		}
 		
  		//	환영 메시지 출력 
